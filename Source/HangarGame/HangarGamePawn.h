@@ -2,6 +2,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "TheCharacter.h"
 #include "HangarGamePawn.generated.h"
 
 UCLASS(Blueprintable)
@@ -43,6 +44,7 @@ public:
 	// Begin Actor Interface
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+	virtual void BeginPlay() override;
 	// End Actor Interface
 
 	/* Fire a shot in the specified direction */
@@ -57,6 +59,27 @@ public:
 	static const FName FireForwardBinding;
 	static const FName FireRightBinding;
 
+	/*UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	void PlayerTakeDamage(int amount);
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	void AddLife(int amount);
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	int GetLife();
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	int GetMaxLife();
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	float GetLifeRatio();
+
+	*/void SwitchToExtincteur();
+	void SwitchToBouclier();
+	void SwitchToCle();
+	void SwitchToHealGun();
+
+	UPROPERTY(Category = players, EditAnywhere, BlueprintReadWrite)
+	ATheCharacter* player1;
+	UPROPERTY(Category = players, EditAnywhere, BlueprintReadWrite)
+	ATheCharacter* player2;
+
 private:
 
 	/* Flag to control firing  */
@@ -64,6 +87,10 @@ private:
 
 	/** Handle for efficient management of ShotTimerExpired timer */
 	FTimerHandle TimerHandle_ShotTimerExpired;
+
+	/** Handle the life of the player */
+	/*int currentLife;
+	int maxLife;*/
 
 public:
 	/** Returns ShipMeshComponent subobject **/

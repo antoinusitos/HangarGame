@@ -2,8 +2,10 @@
 
 #include "HangarGame.h"
 #include "HangarGamePawn.h"
+#include "EngineUtils.h"
 #include "HangarGameProjectile.h"
 #include "TimerManager.h"
+
 
 const FName AHangarGamePawn::MoveForwardBinding("MoveForward");
 const FName AHangarGamePawn::MoveRightBinding("MoveRight");
@@ -12,7 +14,7 @@ const FName AHangarGamePawn::FireRightBinding("FireRight");
 
 AHangarGamePawn::AHangarGamePawn()
 {	
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> ShipMesh(TEXT("/Game/TwinStick/Meshes/TwinStickUFO.TwinStickUFO"));
+	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> ShipMesh(TEXT("/Game/TwinStick/Meshes/TwinStickUFO.TwinStickUFO"));
 	// Create the mesh component
 	ShipMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ShipMesh"));
 	RootComponent = ShipMeshComponent;
@@ -21,9 +23,9 @@ AHangarGamePawn::AHangarGamePawn()
 	
 	// Cache our sound effect
 	static ConstructorHelpers::FObjectFinder<USoundBase> FireAudio(TEXT("/Game/TwinStick/Audio/TwinStickFire.TwinStickFire"));
-	FireSound = FireAudio.Object;
+	FireSound = FireAudio.Object;*/
 
-	// Create a camera boom...
+	/*// Create a camera boom...
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->AttachTo(RootComponent);
 	CameraBoom->bAbsoluteRotation = true; // Don't want arm to rotate when ship does
@@ -34,7 +36,7 @@ AHangarGamePawn::AHangarGamePawn()
 	// Create a camera...
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	CameraComponent->AttachTo(CameraBoom, USpringArmComponent::SocketName);
-	CameraComponent->bUsePawnControlRotation = false;	// Camera does not rotate relative to arm
+	CameraComponent->bUsePawnControlRotation = false;	// Camera does not rotate relative to arm*/
 
 	// Movement
 	MoveSpeed = 1000.0f;
@@ -42,6 +44,10 @@ AHangarGamePawn::AHangarGamePawn()
 	GunOffset = FVector(90.f, 0.f, 0.f);
 	FireRate = 0.1f;
 	bCanFire = true;
+
+	/*//life
+	maxLife = 100;
+	currentLife = maxLife;*/
 }
 
 void AHangarGamePawn::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -53,6 +59,26 @@ void AHangarGamePawn::SetupPlayerInputComponent(class UInputComponent* InputComp
 	InputComponent->BindAxis(MoveRightBinding);
 	InputComponent->BindAxis(FireForwardBinding);
 	InputComponent->BindAxis(FireRightBinding);
+}
+
+void AHangarGamePawn::BeginPlay()
+{
+	Super::BeginPlay();
+
+	int index = 0;
+
+	for (TActorIterator<ATheCharacter> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		if (index == 0)
+		{
+			player1 = *ActorItr;
+			index++;
+		}
+		else
+		{
+			player2 = *ActorItr;
+		}
+	}
 }
 
 void AHangarGamePawn::Tick(float DeltaSeconds)
@@ -99,7 +125,7 @@ void AHangarGamePawn::FireShot(FVector FireDirection)
 		// If we are pressing fire stick in a direction
 		if (FireDirection.SizeSquared() > 0.0f)
 		{
-			const FRotator FireRotation = FireDirection.Rotation();
+			/*const FRotator FireRotation = FireDirection.Rotation();
 			// Spawn projectile at an offset from this pawn
 			const FVector SpawnLocation = GetActorLocation() + FireRotation.RotateVector(GunOffset);
 
@@ -119,7 +145,14 @@ void AHangarGamePawn::FireShot(FVector FireDirection)
 				UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 			}
 
-			bCanFire = false;
+			bCanFire = false;*/
+			/*TArray<UWeapon*> comps;
+			GetComponents(comps);
+
+			for (auto weapon : comps)
+			{
+				weapon->Fire();
+			}*/
 		}
 	}
 }
@@ -129,3 +162,55 @@ void AHangarGamePawn::ShotTimerExpired()
 	bCanFire = true;
 }
 
+//void AHangarGamePawn::PlayerTakeDamage(int amount)
+//{
+//	currentLife = FMath::Max(0, currentLife - amount);
+//	if (currentLife == 0)
+//	{
+//		//dead
+//	}
+//}
+//
+//void AHangarGamePawn::AddLife(int amount)
+//{
+//	currentLife = FMath::Min(maxLife, currentLife + amount);
+//}
+//
+//int AHangarGamePawn::GetLife()
+//{
+//	return currentLife;
+//}
+//
+//int AHangarGamePawn::GetMaxLife()
+//{
+//	return maxLife;
+//}
+//
+//float AHangarGamePawn::GetLifeRatio()
+//{
+//	return (float)currentLife / (float)maxLife;
+//}
+//
+void AHangarGamePawn::SwitchToExtincteur()
+{
+	if(player1)
+		player1->SwitchToExtincteur();
+}
+
+void AHangarGamePawn::SwitchToBouclier()
+{
+	if (player1)
+		player1->SwitchToBouclier();
+}
+
+void AHangarGamePawn::SwitchToCle()
+{
+	if (player1)
+		player1->SwitchToCle();
+}
+
+void AHangarGamePawn::SwitchToHealGun()
+{
+	if (player1)
+		player1->SwitchToHealGun();
+}
