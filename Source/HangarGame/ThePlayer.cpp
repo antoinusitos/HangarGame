@@ -19,6 +19,7 @@ AThePlayer::AThePlayer()
 
 	// Movement
 	MoveSpeed = 1000.0f;
+	bouclierEquipe = false;
 }
 
 // Called when the game starts or when spawned
@@ -198,8 +199,6 @@ void AThePlayer::FireShot(FVector FireDirection)
 		// Spawn projectile at an offset from this pawn
 		//const FVector SpawnLocation = GetActorLocation() + FireRotation.RotateVector(GunOffset);
 
-		
-
 		SetActorRotation(FireRotation);
 
 		TArray<UWeapon*> comps;
@@ -209,5 +208,9 @@ void AThePlayer::FireShot(FVector FireDirection)
 		{
 			weapon->Fire();
 		}
+	}
+	else
+	{
+		bouclierEquipe = false;
 	}
 }

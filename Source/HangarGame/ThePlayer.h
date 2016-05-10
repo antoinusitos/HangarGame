@@ -48,8 +48,7 @@ public:
 	/* Fire a shot in the specified direction */
 	void FireShot(FVector FireDirection);
 
-	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
-	FVector FireStart;
+	bool bouclierEquipe;
 
 	/** Start of the Fire */
 	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
