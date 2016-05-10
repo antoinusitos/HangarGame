@@ -3,6 +3,7 @@
 #include "HangarGame.h"
 #include "Weapon.h"
 #include "ThePlayer.h"
+#include "Fire.h"
 
 
 // Sets default values for this component's properties
@@ -50,7 +51,7 @@ void UWeapon::Fire()
 	if (canShoot && active)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SHOOT : %s"), *GetReadableName());
-		const FVector Start = GetOwner()->GetActorLocation();
+		const FVector Start = (Cast<AThePlayer>(GetOwner()))->theArrowComponent->GetComponentLocation();
 		//1000 units in facing direction of PC (1000 units in front of the camera)
 		const FVector End = Start + (GetOwner()->GetActorForwardVector() * fireLength);
 		FHitResult HitInfo;
@@ -82,7 +83,11 @@ void UWeapon::ApplyDamage(AActor* receiver)
 	}
 	else if (weaponType == ETypeEnum::Extincteur)
 	{
-
+		auto theFire = Cast<AFire>(receiver);
+		if (theFire)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theFire->GetName());
+		}
 	}
 	else if (weaponType == ETypeEnum::Healgun)
 	{
