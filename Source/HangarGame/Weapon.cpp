@@ -2,6 +2,8 @@
 
 #include "HangarGame.h"
 #include "Weapon.h"
+#include "ThePlayer.h"
+#include "Fire.h"
 
 
 // Sets default values for this component's properties
@@ -17,6 +19,7 @@ UWeapon::UWeapon()
 	damage = 10.0f;
 	active = true;
 	lastShoot = 0.0f;
+	fireLength = 1000;
 }
 
 
@@ -48,7 +51,52 @@ void UWeapon::Fire()
 	if (canShoot && active)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SHOOT : %s"), *GetReadableName());
+		const FVector Start = (Cast<AThePlayer>(GetOwner()))->theArrowComponent->GetComponentLocation();
+		//1000 units in facing direction of PC (1000 units in front of the camera)
+		const FVector End = Start + (GetOwner()->GetActorForwardVector() * fireLength);
+		FHitResult HitInfo;
+		FCollisionQueryParams QParams;
+		ECollisionChannel Channel = ECollisionChannel::ECC_Visibility;
+		FCollisionQueryParams OParams =	FCollisionQueryParams::DefaultQueryParam;
+		if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_Visibility))
+		{
+			ApplyDamage(HitInfo.GetActor());
+		}
 		canShoot = false;
+	}
+}
+
+void UWeapon::ApplyDamage(AActor* receiver)
+{
+	if (weaponType == ETypeEnum::Cle)
+	{
+		auto theReparable = Cast<AReparable>(receiver);
+		if (theReparable)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theReparable->GetName());
+			theReparable->Repare(damage);
+		}
+	}
+	else if (weaponType == ETypeEnum::Bouclier)
+	{
+
+	}
+	else if (weaponType == ETypeEnum::Extincteur)
+	{
+		auto theFire = Cast<AFire>(receiver);
+		if (theFire)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theFire->GetName());
+		}
+	}
+	else if (weaponType == ETypeEnum::Healgun)
+	{
+		auto theCharacter = Cast<AThePlayer>(receiver);
+		if (theCharacter)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theCharacter->GetName());
+			theCharacter->AddLife(damage);
+		}
 	}
 }
 

@@ -4,6 +4,7 @@
 
 #include "GameFramework/Character.h"
 #include "Weapon.h"
+#include "Components/ArrowComponent.h"
 #include "ThePlayer.generated.h"
 
 UCLASS()
@@ -43,6 +44,16 @@ public:
 	/* The speed our ship moves around the level */
 	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
 		float MoveSpeed;
+
+	/* Fire a shot in the specified direction */
+	void FireShot(FVector FireDirection);
+
+	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
+	FVector FireStart;
+
+	/** Start of the Fire */
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
+	class UArrowComponent* theArrowComponent;
 
 private:
 	/** Handle the life of the player */

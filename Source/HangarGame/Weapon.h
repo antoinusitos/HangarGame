@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "Reparable.h"
 #include "Weapon.generated.h"
 
 UENUM(BlueprintType)		
@@ -43,7 +44,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float fireRate;
 	float lastShoot;
+	float fireLength;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	int damage;
+
+	void ApplyDamage(AActor* receiver);
 };
