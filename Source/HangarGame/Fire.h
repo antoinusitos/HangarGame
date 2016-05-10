@@ -24,16 +24,25 @@ public:
 
 	void Damage(int n);
 
-private:
-
+	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
 	int maxNbSpawn;
+
+	int life;
+
+	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
+	int maxLife;
+
+	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
+	float timeToCreate;
+
+	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
+	int damage;
+
+private:
 
 	void SpawnFire();
 
 	void CreateFire(int x, int y, int z);
 
 	FTimerHandle TimerHandle_SpawnFire;
-	
-	int life;
-
 };

@@ -20,10 +20,13 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
 	float launchRate;
 
+	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
 	float steamLength;
 
+	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
 	float damage;
 
 private:

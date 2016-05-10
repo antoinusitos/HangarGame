@@ -11,18 +11,17 @@ ASteam::ASteam()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	launchRate = 2;
+
+	steamLength = 1000;
+
+	damage = 1;
 }
 
 // Called when the game starts or when spawned
 void ASteam::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	launchRate = 2;
-
-	steamLength = 1000;
-
-	damage = 1;
 
 	TArray<UActorComponent*> comps;
 	GetComponents(comps);

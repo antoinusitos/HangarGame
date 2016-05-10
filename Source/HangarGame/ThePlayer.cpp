@@ -21,6 +21,9 @@ AThePlayer::AThePlayer()
 	MoveSpeed = 500.0f;
 	bouclierEquipe = false;
 
+	maxLife = 100.0f;
+	currentLife = maxLife;
+
 	// Animation
 	hit = false;
 	reload = false;
