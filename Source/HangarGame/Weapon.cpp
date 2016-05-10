@@ -70,6 +70,7 @@ void UWeapon::ApplyDamage(AActor* receiver)
 {
 	if (weaponType == ETypeEnum::Cle)
 	{
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
 		auto theReparable = Cast<AReparable>(receiver);
 		if (theReparable)
 		{
@@ -79,10 +80,11 @@ void UWeapon::ApplyDamage(AActor* receiver)
 	}
 	else if (weaponType == ETypeEnum::Bouclier)
 	{
-
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = true;
 	}
 	else if (weaponType == ETypeEnum::Extincteur)
 	{
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
 		auto theFire = Cast<AFire>(receiver);
 		if (theFire)
 		{
@@ -91,6 +93,7 @@ void UWeapon::ApplyDamage(AActor* receiver)
 	}
 	else if (weaponType == ETypeEnum::Healgun)
 	{
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
 		auto theCharacter = Cast<AThePlayer>(receiver);
 		if (theCharacter)
 		{
