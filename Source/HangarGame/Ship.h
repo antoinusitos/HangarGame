@@ -23,6 +23,8 @@ public:
 
 	int GetLife();
 
+	int GetLifeMax();
+
 private:
 
 	AReparable** reparables;
