@@ -3,16 +3,16 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Reparable.generated.h"
+#include "Steam.generated.h"
 
 UCLASS()
-class HANGARGAME_API AReparable : public AActor
+class HANGARGAME_API ASteam : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AReparable();
+	ASteam();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -20,16 +20,24 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	void Repare(int n);
+	float launchRate;
 
-	void Destroy(int n);
+	float steamLength;
 
-	int maxLife;
+	float damage;
 
-	int GetLife();
-	
 private:
 
-	int life;
+	bool active;
+
+	void LaunchSteam();
+
+	FTimerHandle TimerHandle_LaunchSteam;
+
+	void SteamDetect();
+
+	FTimerHandle TimerHandle_SteamDetect;
+
+	UParticleSystemComponent* steamParticles;
 	
 };
