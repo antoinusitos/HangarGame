@@ -18,8 +18,19 @@ AThePlayer::AThePlayer()
 	theArrowComponent->AttachTo(RootComponent);
 
 	// Movement
-	MoveSpeed = 1000.0f;
+	MoveSpeed = 500.0f;
 	bouclierEquipe = false;
+
+	// Animation
+	hit = false;
+	reload = false;
+	dead = false;
+	shoot = false;
+	changeGun = false;
+	attack = false;
+	theSpeed = 0.0f;
+
+	currentWeaponType = ETypeEnum::Cle;
 }
 
 // Called when the game starts or when spawned
@@ -43,6 +54,10 @@ void AThePlayer::Tick( float DeltaTime )
 
 	// Calculate  movement
 	const FVector Movement = MoveDirection * MoveSpeed * DeltaTime;
+
+	theSpeed = Movement.SizeSquared();
+	/*if (MoveDirection.X < 0.0f)
+		theSpeed *= -1;*/
 
 	// If non-zero size, move this actor
 	if (Movement.SizeSquared() > 0.0f)
@@ -90,7 +105,7 @@ void AThePlayer::PlayerTakeDamage(int amount)
 	currentLife = FMath::Max(0, currentLife - amount);
 	if (currentLife == 0)
 	{
-		//dead
+		dead = true;
 	}
 }
 
@@ -117,18 +132,25 @@ float AThePlayer::GetLifeRatio()
 void AThePlayer::SwitchToExtincteur()
 {
 	UE_LOG(LogTemp, Warning, TEXT("extincteur"));
-	TArray<UWeapon*> comps;
-	GetComponents(comps);
 
-	for (auto weapon : comps)
+	if (currentWeaponType != ETypeEnum::Extincteur)
 	{
-		if (weapon->weaponType == ETypeEnum::Extincteur)
+		currentWeaponType = ETypeEnum::Extincteur;
+		TArray<UWeapon*> comps;
+		GetComponents(comps);
+
+		for (auto weapon : comps)
 		{
-			weapon->active = true;
-		}
-		else
-		{
-			weapon->active = false;
+			if (weapon->weaponType == ETypeEnum::Extincteur)
+			{
+				changeGun = true;
+				StopAnimation(0);
+				weapon->active = true;
+			}
+			else
+			{
+				weapon->active = false;
+			}
 		}
 	}
 }
@@ -136,18 +158,25 @@ void AThePlayer::SwitchToExtincteur()
 void AThePlayer::SwitchToBouclier()
 {
 	UE_LOG(LogTemp, Warning, TEXT("bouclier"));
-	TArray<UWeapon*> comps;
-	GetComponents(comps);
 
-	for (auto weapon : comps)
+	if (currentWeaponType != ETypeEnum::Bouclier)
 	{
-		if (weapon->weaponType == ETypeEnum::Bouclier)
+		currentWeaponType = ETypeEnum::Bouclier;
+		TArray<UWeapon*> comps;
+		GetComponents(comps);
+
+		for (auto weapon : comps)
 		{
-			weapon->active = true;
-		}
-		else
-		{
-			weapon->active = false;
+			if (weapon->weaponType == ETypeEnum::Bouclier)
+			{
+				changeGun = true;
+				StopAnimation(0);
+				weapon->active = true;
+			}
+			else
+			{
+				weapon->active = false;
+			}
 		}
 	}
 }
@@ -155,18 +184,25 @@ void AThePlayer::SwitchToBouclier()
 void AThePlayer::SwitchToCle()
 {
 	UE_LOG(LogTemp, Warning, TEXT("cle"));
-	TArray<UWeapon*> comps;
-	GetComponents(comps);
 
-	for (auto weapon : comps)
+	if (currentWeaponType != ETypeEnum::Cle)
 	{
-		if (weapon->weaponType == ETypeEnum::Cle)
+		currentWeaponType = ETypeEnum::Cle;
+		TArray<UWeapon*> comps;
+		GetComponents(comps);
+
+		for (auto weapon : comps)
 		{
-			weapon->active = true;
-		}
-		else
-		{
-			weapon->active = false;
+			if (weapon->weaponType == ETypeEnum::Cle)
+			{
+				changeGun = true;
+				StopAnimation(0);
+				weapon->active = true;
+			}
+			else
+			{
+				weapon->active = false;
+			}
 		}
 	}
 }
@@ -174,18 +210,25 @@ void AThePlayer::SwitchToCle()
 void AThePlayer::SwitchToHealGun()
 {
 	UE_LOG(LogTemp, Warning, TEXT("healgun"));
-	TArray<UWeapon*> comps;
-	GetComponents(comps);
 
-	for (auto weapon : comps)
+	if (currentWeaponType != ETypeEnum::Healgun)
 	{
-		if (weapon->weaponType == ETypeEnum::Healgun)
+		currentWeaponType = ETypeEnum::Healgun;
+		TArray<UWeapon*> comps;
+		GetComponents(comps);
+
+		for (auto weapon : comps)
 		{
-			weapon->active = true;
-		}
-		else
-		{
-			weapon->active = false;
+			if (weapon->weaponType == ETypeEnum::Healgun)
+			{
+				changeGun = true;
+				StopAnimation(0);
+				weapon->active = true;
+			}
+			else
+			{
+				weapon->active = false;
+			}
 		}
 	}
 }
@@ -212,5 +255,30 @@ void AThePlayer::FireShot(FVector FireDirection)
 	else
 	{
 		bouclierEquipe = false;
+		SetBool(0, false);
+		SetBool(1, false);
+		SetBool(2, false);
 	}
+}
+
+void AThePlayer::SetBool(int theBool, bool state)
+{
+	if (theBool == 0)
+	{
+		changeGun = state;
+	}
+	else if (theBool == 1)
+	{
+		shoot = state;
+	}
+	else if (theBool == 2)
+	{
+		attack = state;
+	}
+}
+
+void AThePlayer::StopAnimation(int id)
+{
+	TimerDel = FTimerDelegate::CreateUObject(this, &AThePlayer::SetBool, id, false);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Animation, TimerDel, .2f, false);
 }

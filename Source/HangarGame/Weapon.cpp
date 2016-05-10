@@ -51,6 +51,9 @@ void UWeapon::Fire()
 	if (canShoot && active)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SHOOT : %s"), *GetReadableName());
+
+		PlayAnimation();
+
 		const FVector Start = (Cast<AThePlayer>(GetOwner()))->theArrowComponent->GetComponentLocation();
 		//1000 units in facing direction of PC (1000 units in front of the camera)
 		const FVector End = Start + (GetOwner()->GetActorForwardVector() * fireLength);
@@ -64,13 +67,35 @@ void UWeapon::Fire()
 		}
 		canShoot = false;
 	}
+	else if (active)
+	{
+		Cast<AThePlayer>(GetOwner())->attack = false;
+	}
+}
+
+void UWeapon::PlayAnimation()
+{
+	if (weaponType == ETypeEnum::Cle)
+	{
+		Cast<AThePlayer>(GetOwner())->attack = true;
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
+	}
+	else if (weaponType == ETypeEnum::Extincteur)
+	{
+		Cast<AThePlayer>(GetOwner())->shoot = true;
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
+	}
+	else if (weaponType == ETypeEnum::Healgun)
+	{
+		Cast<AThePlayer>(GetOwner())->shoot = true;
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
+	}
 }
 
 void UWeapon::ApplyDamage(AActor* receiver)
 {
 	if (weaponType == ETypeEnum::Cle)
 	{
-		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
 		auto theReparable = Cast<AReparable>(receiver);
 		if (theReparable)
 		{
@@ -84,7 +109,6 @@ void UWeapon::ApplyDamage(AActor* receiver)
 	}
 	else if (weaponType == ETypeEnum::Extincteur)
 	{
-		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
 		auto theFire = Cast<AFire>(receiver);
 		if (theFire)
 		{
@@ -93,7 +117,6 @@ void UWeapon::ApplyDamage(AActor* receiver)
 	}
 	else if (weaponType == ETypeEnum::Healgun)
 	{
-		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
 		auto theCharacter = Cast<AThePlayer>(receiver);
 		if (theCharacter)
 		{
