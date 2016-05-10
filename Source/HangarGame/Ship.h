@@ -2,17 +2,18 @@
 
 #pragma once
 
+#include "Reparable.h"
 #include "GameFramework/Actor.h"
-#include "Reparable.generated.h"
+#include "Ship.generated.h"
 
 UCLASS()
-class HANGARGAME_API AReparable : public AActor
+class HANGARGAME_API AShip : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AReparable();
+	AShip();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -20,16 +21,12 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	void Repare(int n);
-
-	void Destroy(int n);
-
-	int maxLife;
-
 	int GetLife();
-	
+
 private:
 
-	int life;
+	AReparable** reparables;
+
+	int nbReparable;
 	
 };
