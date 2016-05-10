@@ -44,3 +44,15 @@ int AShip::GetLife()
 	return life;
 }
 
+int AShip::GetLifeMax()
+{
+	int life = 0;
+
+	for (int i = 0; i < nbReparable; i++) 
+	{
+		life = life + reparables[i]->maxLife;
+	}
+
+	return life;
+}
+

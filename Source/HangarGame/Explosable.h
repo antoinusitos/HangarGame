@@ -2,18 +2,18 @@
 
 #pragma once
 
-#include "Reparable.h"
+#include "Components/DecalComponent.h"
 #include "GameFramework/Actor.h"
-#include "Ship.generated.h"
+#include "Explosable.generated.h"
 
 UCLASS()
-class HANGARGAME_API AShip : public AActor
+class HANGARGAME_API AExplosable : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AShip();
+	AExplosable();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -21,14 +21,18 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	int GetLife();
+	void Explose(float timer);
+	
+	bool blockable;
 
-	int GetLifeMax();
+	int damage;
 
 private:
 
-	AReparable** reparables;
+	void DoExplosion();
 
-	int nbReparable;
-	
+	FTimerHandle TimerHandle_DoExplosion;
+
+	UDecalComponent* myDecal;
+
 };
