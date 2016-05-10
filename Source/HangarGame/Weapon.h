@@ -50,4 +50,6 @@ public:
 	int damage;
 
 	void ApplyDamage(AActor* receiver);
+
+	void PlayAnimation();
 };
