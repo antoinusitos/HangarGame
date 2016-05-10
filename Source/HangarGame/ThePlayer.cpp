@@ -54,6 +54,14 @@ void AThePlayer::Tick( float DeltaTime )
 			RootComponent->MoveComponent(Deflection, NewRotation, true);
 		}
 	}
+
+	// Create fire direction vector
+	const float FireForwardValue = GetInputAxisValue(FireForwardBinding);
+	const float FireRightValue = GetInputAxisValue(FireRightBinding);
+	const FVector FireDirection = FVector(FireForwardValue, FireRightValue, 0.f);
+
+	// Try and fire a shot
+	FireShot(FireDirection);
 }
 
 // Called to bind functionality to input
@@ -174,6 +182,42 @@ void AThePlayer::SwitchToHealGun()
 		else
 		{
 			weapon->active = false;
+		}
+	}
+}
+
+void AThePlayer::FireShot(FVector FireDirection)
+{
+	// If we are pressing fire stick in a direction
+	if (FireDirection.SizeSquared() > 0.0f)
+	{
+		/*const FRotator FireRotation = FireDirection.Rotation();
+		// Spawn projectile at an offset from this pawn
+		const FVector SpawnLocation = GetActorLocation() + FireRotation.RotateVector(GunOffset);
+
+		UWorld* const World = GetWorld();
+		if (World != NULL)
+		{
+		// spawn the projectile
+		World->SpawnActor<AHangarGameProjectile>(SpawnLocation, FireRotation);
+		}
+
+		bCanFire = false;
+		World->GetTimerManager().SetTimer(TimerHandle_ShotTimerExpired, this, &AHangarGamePawn::ShotTimerExpired, FireRate);
+
+		// try and play the sound if specified
+		if (FireSound != nullptr)
+		{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+		}
+
+		bCanFire = false;*/
+		TArray<UWeapon*> comps;
+		GetComponents(comps);
+
+		for (auto weapon : comps)
+		{
+			weapon->Fire();
 		}
 	}
 }

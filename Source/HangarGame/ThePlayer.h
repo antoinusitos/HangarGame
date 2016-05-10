@@ -44,6 +44,9 @@ public:
 	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
 		float MoveSpeed;
 
+	/* Fire a shot in the specified direction */
+	void FireShot(FVector FireDirection);
+
 private:
 	/** Handle the life of the player */
 	int currentLife;

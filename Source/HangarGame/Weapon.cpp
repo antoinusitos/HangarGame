@@ -17,6 +17,7 @@ UWeapon::UWeapon()
 	damage = 10.0f;
 	active = true;
 	lastShoot = 0.0f;
+	fireLength = 1000;
 }
 
 
@@ -48,6 +49,21 @@ void UWeapon::Fire()
 	if (canShoot && active)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SHOOT : %s"), *GetReadableName());
+		const FVector Start = GetOwner()->GetActorLocation();
+		//1000 units in facing direction of PC (1000 units in front of the camera)
+		const FVector End = Start + (GetOwner()->GetActorForwardVector() * fireLength);
+		FHitResult HitInfo;
+		FCollisionQueryParams QParams;
+		ECollisionChannel Channel = ECollisionChannel::ECC_Visibility;
+		FCollisionQueryParams OParams =	FCollisionQueryParams::DefaultQueryParam;
+		if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_Visibility))
+		{
+			/*auto MyPC = Cast<ATutoPlayer>(HitInfo.GetActor());
+			if (MyPC) {
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue,	TEXT("" + PlayerState->PlayerName + " hits " + MyPC->PlayerState ->PlayerName));
+				MyPC->TakeHit(Damage, this);
+			}*/
+		}
 		canShoot = false;
 	}
 }
