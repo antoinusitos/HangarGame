@@ -20,6 +20,20 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	int nbSpawn;
+
+	void Damage(int n);
+
+private:
+
+	int maxNbSpawn;
+
+	void SpawnFire();
+
+	void CreateFire(int x, int y, int z);
+
+	FTimerHandle TimerHandle_SpawnFire;
 	
-	
+	int life;
+
 };
