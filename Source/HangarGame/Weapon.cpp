@@ -2,6 +2,7 @@
 
 #include "HangarGame.h"
 #include "Weapon.h"
+#include "ThePlayer.h"
 
 
 // Sets default values for this component's properties
@@ -58,13 +59,39 @@ void UWeapon::Fire()
 		FCollisionQueryParams OParams =	FCollisionQueryParams::DefaultQueryParam;
 		if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_Visibility))
 		{
-			/*auto MyPC = Cast<ATutoPlayer>(HitInfo.GetActor());
-			if (MyPC) {
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue,	TEXT("" + PlayerState->PlayerName + " hits " + MyPC->PlayerState ->PlayerName));
-				MyPC->TakeHit(Damage, this);
-			}*/
+			ApplyDamage(HitInfo.GetActor());
 		}
 		canShoot = false;
+	}
+}
+
+void UWeapon::ApplyDamage(AActor* receiver)
+{
+	if (weaponType == ETypeEnum::Cle)
+	{
+		auto theReparable = Cast<AReparable>(receiver);
+		if (theReparable)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theReparable->GetName());
+			theReparable->Repare(damage);
+		}
+	}
+	else if (weaponType == ETypeEnum::Bouclier)
+	{
+
+	}
+	else if (weaponType == ETypeEnum::Extincteur)
+	{
+
+	}
+	else if (weaponType == ETypeEnum::Healgun)
+	{
+		auto theCharacter = Cast<AThePlayer>(receiver);
+		if (theCharacter)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theCharacter->GetName());
+			theCharacter->AddLife(damage);
+		}
 	}
 }
 

@@ -112,7 +112,7 @@ float AThePlayer::GetLifeRatio()
 
 void AThePlayer::SwitchToExtincteur()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("extincteur"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -131,7 +131,7 @@ void AThePlayer::SwitchToExtincteur()
 
 void AThePlayer::SwitchToBouclier()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("bouclier"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -150,7 +150,7 @@ void AThePlayer::SwitchToBouclier()
 
 void AThePlayer::SwitchToCle()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("cle"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -169,7 +169,7 @@ void AThePlayer::SwitchToCle()
 
 void AThePlayer::SwitchToHealGun()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("healgun"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -191,27 +191,14 @@ void AThePlayer::FireShot(FVector FireDirection)
 	// If we are pressing fire stick in a direction
 	if (FireDirection.SizeSquared() > 0.0f)
 	{
-		/*const FRotator FireRotation = FireDirection.Rotation();
+		const FRotator FireRotation = FireDirection.Rotation();
 		// Spawn projectile at an offset from this pawn
-		const FVector SpawnLocation = GetActorLocation() + FireRotation.RotateVector(GunOffset);
+		//const FVector SpawnLocation = GetActorLocation() + FireRotation.RotateVector(GunOffset);
 
-		UWorld* const World = GetWorld();
-		if (World != NULL)
-		{
-		// spawn the projectile
-		World->SpawnActor<AHangarGameProjectile>(SpawnLocation, FireRotation);
-		}
+		
 
-		bCanFire = false;
-		World->GetTimerManager().SetTimer(TimerHandle_ShotTimerExpired, this, &AHangarGamePawn::ShotTimerExpired, FireRate);
+		SetActorRotation(FireRotation);
 
-		// try and play the sound if specified
-		if (FireSound != nullptr)
-		{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-		}
-
-		bCanFire = false;*/
 		TArray<UWeapon*> comps;
 		GetComponents(comps);
 
