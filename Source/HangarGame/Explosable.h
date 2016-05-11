@@ -35,4 +35,8 @@ private:
 
 	UDecalComponent* myDecal;
 
+	UParticleSystemComponent* warning;
+
+	UParticleSystemComponent* trigger;
+
 };
