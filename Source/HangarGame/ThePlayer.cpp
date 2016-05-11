@@ -55,7 +55,7 @@ void AThePlayer::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	if (currentLife >= 0)
+	if (currentLife > 0)
 	{
 		// Find movement direction
 		const float ForwardValue = GetInputAxisValue(MoveForwardBinding);
@@ -273,7 +273,7 @@ void AThePlayer::FireShot(FVector FireDirection)
 
 		TArray<UWeapon*> comps;
 		GetComponents(comps);
-
+		//UE_LOG(LogTemp, Warning, TEXT("tir !"));
 		for (auto weapon : comps)
 		{
 			weapon->Fire();
@@ -327,7 +327,9 @@ bool AThePlayer::checkAngle(AActor * origin)
 	FVector AC = GetActorForwardVector();
 	float angle = FMath::Acos((AB.X*AC.X + AB.Y*AC.Y + AB.Z*AC.Z) / (sqrt((AB.X * AB.X) + (AB.Y * AB.Y) + (AB.Z * AB.Z))*sqrt((AC.X * AC.X) + (AC.Y * AC.Y) + (AC.Z * AC.Z))));
 	float degAngle = FMath::RadiansToDegrees(angle);
-	if (degAngle <= angleBouclier)
+	UE_LOG(LogTemp, Warning, TEXT("player touched : angle : %f"), degAngle);
+	UE_LOG(LogTemp, Warning, TEXT("player touched : angle : %s"), bouclierEquipe == true ? TEXT("equipe") : TEXT("not equiped"));
+	if (degAngle <= 170 && degAngle >= 140 && bouclierEquipe)
 		retour = true;
 	return retour;
 }

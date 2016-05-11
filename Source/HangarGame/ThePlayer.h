@@ -109,4 +109,6 @@ private:
 	FTimerDelegate TimerDel;
 
 	void SetBool(int theBool, bool state);
+
+	//TArray<UWeapon*> comps;
 };

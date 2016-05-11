@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Components/ArrowComponent.h"
 #include "Steam.generated.h"
 
 UCLASS()
@@ -28,6 +29,9 @@ public:
 
 	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
 	float damage;
+
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
+	class UArrowComponent* theArrowComponent;
 
 private:
 

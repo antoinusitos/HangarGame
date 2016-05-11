@@ -13,9 +13,12 @@ ASteam::ASteam()
 
 	launchRate = 2;
 
-	steamLength = 1000;
+	steamLength = 5000;
 
 	damage = 1;
+
+	theArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("FireStart"));
+	theArrowComponent->AttachTo(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -62,7 +65,7 @@ void ASteam::SteamDetect()
 {
 	if (active) 
 	{
-		const FVector Start = GetActorLocation();
+		const FVector Start = theArrowComponent->GetComponentLocation();
 		const FVector End = GetActorLocation() + GetActorForwardVector()*steamLength;
 
 		FHitResult HitInfo;
@@ -73,7 +76,8 @@ void ASteam::SteamDetect()
 		if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_Visibility))
 		{
 			auto player = Cast<AThePlayer>(HitInfo.GetActor());
-			if (player) {
+			if (player) 
+			{
 				if(player->checkAngle(this) == false)
 					player->PlayerTakeDamage(damage);
 
