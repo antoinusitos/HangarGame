@@ -50,7 +50,7 @@ void UWeapon::Fire()
 {
 	if (canShoot && active)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SHOOT : %s"), *GetReadableName());
+		//UE_LOG(LogTemp, Warning, TEXT("SHOOT : %s"), *GetReadableName());
 
 		PlayAnimation();
 
@@ -65,12 +65,18 @@ void UWeapon::Fire()
 		{
 			ApplyDamage(HitInfo.GetActor());
 		}
-		canShoot = false;
+		if(weaponType != ETypeEnum::Bouclier)
+			canShoot = false;
+		else
+		{
+			Cast<AThePlayer>(GetOwner())->bouclierEquipe = true;
+		}
 	}
 	else if (active)
 	{
 		Cast<AThePlayer>(GetOwner())->attack = false;
 	}
+
 }
 
 void UWeapon::PlayAnimation()
@@ -99,7 +105,7 @@ void UWeapon::ApplyDamage(AActor* receiver)
 		auto theReparable = Cast<AReparable>(receiver);
 		if (theReparable)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theReparable->GetName());
+			
 			theReparable->Repare(damage);
 		}
 	}
@@ -112,7 +118,6 @@ void UWeapon::ApplyDamage(AActor* receiver)
 		auto theFire = Cast<AFire>(receiver);
 		if (theFire)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theFire->GetName());
 			theFire->Damage(damage);
 		}
 	}
@@ -121,7 +126,6 @@ void UWeapon::ApplyDamage(AActor* receiver)
 		auto theCharacter = Cast<AThePlayer>(receiver);
 		if (theCharacter)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theCharacter->GetName());
 			theCharacter->Heal();
 		}
 	}
