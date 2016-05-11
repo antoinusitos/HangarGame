@@ -9,6 +9,9 @@ AReparable::AReparable()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	maxLife = 100;
+	life = 0;
+	active = false;
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +30,14 @@ void AReparable::Tick( float DeltaTime )
 
 void AReparable::Repare(int n) 
 {
-	life = FMath::Clamp(life+n, 0, maxLife);
+	if (active)
+	{
+		life = FMath::Clamp(life + n, 0, maxLife);
+
+		if (life >= maxLife) {
+			ship->changeReparable(this);
+		}
+	}
 }
 
 void AReparable::Destroy(int n)

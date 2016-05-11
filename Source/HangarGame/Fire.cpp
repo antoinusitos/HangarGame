@@ -99,4 +99,8 @@ void AFire::CreateFire(int x, int y, int z)
 void AFire::Damage(int n) {
 
 	life = FMath::Clamp(life - n, 0, maxLife);
+	if (life <= 0)
+	{
+		Destroy();
+	}
 }

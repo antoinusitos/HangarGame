@@ -113,6 +113,7 @@ void UWeapon::ApplyDamage(AActor* receiver)
 		if (theFire)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theFire->GetName());
+			theFire->Damage(damage);
 		}
 	}
 	else if (weaponType == ETypeEnum::Healgun)

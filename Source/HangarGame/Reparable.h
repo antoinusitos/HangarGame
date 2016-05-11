@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Ship.h"
 #include "Reparable.generated.h"
 
 UCLASS()
@@ -28,6 +29,11 @@ public:
 
 	int GetLife();
 	
+	UPROPERTY(Category = active, VisibleAnywhere, BlueprintReadWrite)
+	bool active;
+
+	AShip* ship;
+
 private:
 
 	int life;

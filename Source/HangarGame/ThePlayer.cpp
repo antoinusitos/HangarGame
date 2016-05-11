@@ -55,54 +55,57 @@ void AThePlayer::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	// Find movement direction
-	const float ForwardValue = GetInputAxisValue(MoveForwardBinding);
-	const float RightValue = GetInputAxisValue(MoveRightBinding);
-
-	// Clamp max size so that (X=1, Y=1) doesn't cause faster movement in diagonal directions
-	const FVector MoveDirection = FVector(ForwardValue, RightValue, 0.f).GetClampedToMaxSize(1.0f);
-
-	// Calculate  movement
-	const FVector Movement = MoveDirection * MoveSpeed * DeltaTime;
-
-	theSpeed = Movement.SizeSquared();
-	/*if (MoveDirection.X < 0.0f)
-		theSpeed *= -1;*/
-
-	// If non-zero size, move this actor
-	if (Movement.SizeSquared() > 0.0f)
+	if (currentLife >= 0)
 	{
-		const FRotator NewRotation = Movement.Rotation();
-		FHitResult Hit(1.f);
-		RootComponent->MoveComponent(Movement, NewRotation, true, &Hit);
+		// Find movement direction
+		const float ForwardValue = GetInputAxisValue(MoveForwardBinding);
+		const float RightValue = GetInputAxisValue(MoveRightBinding);
 
-		if (Hit.IsValidBlockingHit())
+		// Clamp max size so that (X=1, Y=1) doesn't cause faster movement in diagonal directions
+		const FVector MoveDirection = FVector(ForwardValue, RightValue, 0.f).GetClampedToMaxSize(1.0f);
+
+		// Calculate  movement
+		const FVector Movement = MoveDirection * MoveSpeed * DeltaTime;
+
+		theSpeed = Movement.SizeSquared();
+		/*if (MoveDirection.X < 0.0f)
+			theSpeed *= -1;*/
+
+			// If non-zero size, move this actor
+		if (Movement.SizeSquared() > 0.0f)
 		{
-			const FVector Normal2D = Hit.Normal.GetSafeNormal2D();
-			const FVector Deflection = FVector::VectorPlaneProject(Movement, Normal2D) * (1.f - Hit.Time);
-			RootComponent->MoveComponent(Deflection, NewRotation, true);
+			const FRotator NewRotation = Movement.Rotation();
+			FHitResult Hit(1.f);
+			RootComponent->MoveComponent(Movement, NewRotation, true, &Hit);
+
+			if (Hit.IsValidBlockingHit())
+			{
+				const FVector Normal2D = Hit.Normal.GetSafeNormal2D();
+				const FVector Deflection = FVector::VectorPlaneProject(Movement, Normal2D) * (1.f - Hit.Time);
+				RootComponent->MoveComponent(Deflection, NewRotation, true);
+			}
 		}
-	}
 
-	// Create fire direction vector
-	const float FireForwardValue = GetInputAxisValue(FireForwardBinding);
-	const float FireRightValue = GetInputAxisValue(FireRightBinding);
-	const FVector FireDirection = FVector(FireForwardValue, FireRightValue, 0.f);
+		// Create fire direction vector
+		const float FireForwardValue = GetInputAxisValue(FireForwardBinding);
+		const float FireRightValue = GetInputAxisValue(FireRightBinding);
+		const FVector FireDirection = FVector(FireForwardValue, FireRightValue, 0.f);
 
-	// Try and fire a shot
-	FireShot(FireDirection);
+		// Try and fire a shot
+		FireShot(FireDirection);
 
-	if (isHealing)
-	{
-		currentHealTime += DeltaTime;
-		if (FMath::Fmod(currentHealTime, 0.1f) <= 0.01f)
+		if (isHealing)
 		{
-			AddLife(healAmount);
-		}
-		if (currentHealTime >= healTime)
-		{
-			canHeal = true;
-			isHealing = false;
+			currentHealTime += DeltaTime;
+			if (FMath::Fmod(currentHealTime, 0.1f) <= 0.01f)
+			{
+				AddLife(healAmount);
+			}
+			if (currentHealTime >= healTime)
+			{
+				canHeal = true;
+				isHealing = false;
+			}
 		}
 	}
 }

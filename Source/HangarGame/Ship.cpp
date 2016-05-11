@@ -2,6 +2,7 @@
 
 #include "HangarGame.h"
 #include "Ship.h"
+#include "Reparable.h"
 
 // Sets default values
 AShip::AShip()
@@ -24,9 +25,15 @@ void AShip::BeginPlay()
 
 		reparables.Add(aR);
 
+		canBeRepared.Add(aR);
+
 		nbReparable++;
+
+		aR->ship = this;
 	}
 
+	int index = FMath::RandRange(0, reparables.Num()-1);
+	reparables[index]->active = true;
 
 }
 
@@ -61,4 +68,12 @@ int AShip::GetLifeMax()
 	return life;
 }
 
+void AShip::changeReparable(AReparable* reparated)
+{
+	canBeRepared.Remove(reparated);
 
+	if (canBeRepared.Num() > 0) {
+		int index = FMath::RandRange(0, canBeRepared.Num() - 1);
+		canBeRepared[index]->active = true;
+	}
+}
