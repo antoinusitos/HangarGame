@@ -2,6 +2,8 @@
 
 #include "HangarGame.h"
 #include "Weapon.h"
+#include "ThePlayer.h"
+#include "Fire.h"
 
 
 // Sets default values for this component's properties
@@ -49,7 +51,7 @@ void UWeapon::Fire()
 	if (canShoot && active)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SHOOT : %s"), *GetReadableName());
-		const FVector Start = GetOwner()->GetActorLocation();
+		const FVector Start = (Cast<AThePlayer>(GetOwner()))->theArrowComponent->GetComponentLocation();
 		//1000 units in facing direction of PC (1000 units in front of the camera)
 		const FVector End = Start + (GetOwner()->GetActorForwardVector() * fireLength);
 		FHitResult HitInfo;
@@ -58,13 +60,46 @@ void UWeapon::Fire()
 		FCollisionQueryParams OParams =	FCollisionQueryParams::DefaultQueryParam;
 		if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_Visibility))
 		{
-			/*auto MyPC = Cast<ATutoPlayer>(HitInfo.GetActor());
-			if (MyPC) {
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue,	TEXT("" + PlayerState->PlayerName + " hits " + MyPC->PlayerState ->PlayerName));
-				MyPC->TakeHit(Damage, this);
-			}*/
+			ApplyDamage(HitInfo.GetActor());
 		}
 		canShoot = false;
+	}
+}
+
+void UWeapon::ApplyDamage(AActor* receiver)
+{
+	if (weaponType == ETypeEnum::Cle)
+	{
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
+		auto theReparable = Cast<AReparable>(receiver);
+		if (theReparable)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theReparable->GetName());
+			theReparable->Repare(damage);
+		}
+	}
+	else if (weaponType == ETypeEnum::Bouclier)
+	{
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = true;
+	}
+	else if (weaponType == ETypeEnum::Extincteur)
+	{
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
+		auto theFire = Cast<AFire>(receiver);
+		if (theFire)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theFire->GetName());
+		}
+	}
+	else if (weaponType == ETypeEnum::Healgun)
+	{
+		Cast<AThePlayer>(GetOwner())->bouclierEquipe = false;
+		auto theCharacter = Cast<AThePlayer>(receiver);
+		if (theCharacter)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theCharacter->GetName());
+			theCharacter->AddLife(damage);
+		}
 	}
 }
 

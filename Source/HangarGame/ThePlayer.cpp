@@ -14,8 +14,12 @@ AThePlayer::AThePlayer()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	theArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("FireStart"));
+	theArrowComponent->AttachTo(RootComponent);
+
 	// Movement
 	MoveSpeed = 1000.0f;
+	bouclierEquipe = false;
 }
 
 // Called when the game starts or when spawned
@@ -112,7 +116,7 @@ float AThePlayer::GetLifeRatio()
 
 void AThePlayer::SwitchToExtincteur()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("extincteur"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -131,7 +135,7 @@ void AThePlayer::SwitchToExtincteur()
 
 void AThePlayer::SwitchToBouclier()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("bouclier"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -150,7 +154,7 @@ void AThePlayer::SwitchToBouclier()
 
 void AThePlayer::SwitchToCle()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("cle"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -169,7 +173,7 @@ void AThePlayer::SwitchToCle()
 
 void AThePlayer::SwitchToHealGun()
 {
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
+	UE_LOG(LogTemp, Warning, TEXT("healgun"));
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
@@ -191,27 +195,12 @@ void AThePlayer::FireShot(FVector FireDirection)
 	// If we are pressing fire stick in a direction
 	if (FireDirection.SizeSquared() > 0.0f)
 	{
-		/*const FRotator FireRotation = FireDirection.Rotation();
+		const FRotator FireRotation = FireDirection.Rotation();
 		// Spawn projectile at an offset from this pawn
-		const FVector SpawnLocation = GetActorLocation() + FireRotation.RotateVector(GunOffset);
+		//const FVector SpawnLocation = GetActorLocation() + FireRotation.RotateVector(GunOffset);
 
-		UWorld* const World = GetWorld();
-		if (World != NULL)
-		{
-		// spawn the projectile
-		World->SpawnActor<AHangarGameProjectile>(SpawnLocation, FireRotation);
-		}
+		SetActorRotation(FireRotation);
 
-		bCanFire = false;
-		World->GetTimerManager().SetTimer(TimerHandle_ShotTimerExpired, this, &AHangarGamePawn::ShotTimerExpired, FireRate);
-
-		// try and play the sound if specified
-		if (FireSound != nullptr)
-		{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-		}
-
-		bCanFire = false;*/
 		TArray<UWeapon*> comps;
 		GetComponents(comps);
 
@@ -219,5 +208,9 @@ void AThePlayer::FireShot(FVector FireDirection)
 		{
 			weapon->Fire();
 		}
+	}
+	else
+	{
+		bouclierEquipe = false;
 	}
 }

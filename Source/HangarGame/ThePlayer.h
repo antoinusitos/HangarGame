@@ -4,6 +4,7 @@
 
 #include "GameFramework/Character.h"
 #include "Weapon.h"
+#include "Components/ArrowComponent.h"
 #include "ThePlayer.generated.h"
 
 UCLASS()
@@ -46,6 +47,12 @@ public:
 
 	/* Fire a shot in the specified direction */
 	void FireShot(FVector FireDirection);
+
+	bool bouclierEquipe;
+
+	/** Start of the Fire */
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
+	class UArrowComponent* theArrowComponent;
 
 private:
 	/** Handle the life of the player */
