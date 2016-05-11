@@ -17,7 +17,7 @@ AFire::AFire()
 	maxLife = 100;
 	life = maxLife;
 
-	timeToCreate = 2.0f;
+	timeToCreate = 5.0f;
 
 	damage = 10;
 }
@@ -41,7 +41,7 @@ void AFire::SpawnFire()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Fire Spawn"));
 
-	if (nbSpawn > 0) {
+	//if (nbSpawn > 0) {
 
 		CreateFire(120, 0, 0);
 
@@ -51,7 +51,7 @@ void AFire::SpawnFire()
 
 		CreateFire(0, -120, 0);
 
-	}
+	//}
 
 }
 

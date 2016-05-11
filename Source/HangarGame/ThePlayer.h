@@ -49,6 +49,9 @@ public:
 	void FireShot(FVector FireDirection);
 
 	bool bouclierEquipe;
+	UPROPERTY(Category = Bouclier, EditAnywhere, BlueprintReadWrite)
+	float angleBouclier;
+
 
 	/** Start of the Fire */
 	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
@@ -77,6 +80,18 @@ public:
 
 	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
 	int maxLife;
+
+	void Heal();
+
+	UPROPERTY(Category = Heal, EditAnywhere, BlueprintReadWrite)
+	float healTime;
+	float currentHealTime;
+	bool canHeal;
+	bool isHealing;
+	UPROPERTY(Category = Heal, EditAnywhere, BlueprintReadWrite)
+	int healAmount;
+
+	bool checkAngle(AActor* origin);
 
 private:
 	/** Handle the life of the player */

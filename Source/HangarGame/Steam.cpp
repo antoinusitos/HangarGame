@@ -74,8 +74,8 @@ void ASteam::SteamDetect()
 		{
 			auto player = Cast<AThePlayer>(HitInfo.GetActor());
 			if (player) {
-
-				player->PlayerTakeDamage(damage);
+				if(player->checkAngle(this) == false)
+					player->PlayerTakeDamage(damage);
 
 				UE_LOG(LogTemp, Warning, TEXT("player touched"));
 			}
