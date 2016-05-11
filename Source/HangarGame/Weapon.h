@@ -44,10 +44,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float fireRate;
 	float lastShoot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float fireLength;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	int damage;
 
 	void ApplyDamage(AActor* receiver);
+
+	void PlayAnimation();
 };

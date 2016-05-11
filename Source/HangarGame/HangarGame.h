@@ -9,6 +9,7 @@
 // Place any includes here that are needed by the majority of your .cpp files
 
 #include "EngineMinimal.h"
+#include "EngineUtils.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogHangarGame, Log, All);
 

@@ -26,6 +26,8 @@ public:
 
 	int maxLife;
 
+	int GetLife();
+	
 private:
 
 	int life;

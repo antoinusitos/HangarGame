@@ -31,15 +31,15 @@ public:
 	void SwitchToHealGun();
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-		void PlayerTakeDamage(int amount);
+	void PlayerTakeDamage(int amount);
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-		void AddLife(int amount);
+	void AddLife(int amount);
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-		int GetLife();
+	int GetLife();
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-		int GetMaxLife();
+	int GetMaxLife();
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-		float GetLifeRatio();
+	float GetLifeRatio();
 
 	/* The speed our ship moves around the level */
 	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
@@ -54,16 +54,44 @@ public:
 	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
 	class UArrowComponent* theArrowComponent;
 
+	/** Animation states */
+	UPROPERTY(Category = Animation, VisibleAnywhere, BlueprintReadWrite)
+	bool hit;
+	UPROPERTY(Category = Animation, VisibleAnywhere, BlueprintReadWrite)
+	bool reload;
+	UPROPERTY(Category = Animation, VisibleAnywhere, BlueprintReadWrite)
+	bool dead;
+	UPROPERTY(Category = Animation, VisibleAnywhere, BlueprintReadWrite)
+	bool shoot;
+	UPROPERTY(Category = Animation, VisibleAnywhere, BlueprintReadWrite)
+	bool changeGun;
+	UPROPERTY(Category = Animation, VisibleAnywhere, BlueprintReadWrite)
+	bool attack;
+	UPROPERTY(Category = Animation, VisibleAnywhere, BlueprintReadWrite)
+	float theSpeed;
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	void StopAnimation(int id);
+
+	/** FIN ANIMATION */
+
+	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
+	int maxLife;
+
 private:
 	/** Handle the life of the player */
 	int currentLife;
-	int maxLife;
+	
+
+	ETypeEnum currentWeaponType;
 	
 	static const FName MoveForwardBinding;
 	static const FName MoveRightBinding;
 	static const FName FireForwardBinding;
 	static const FName FireRightBinding;
 
-	
+	FTimerHandle TimerHandle_Animation;
+	FTimerDelegate TimerDel;
 
+	void SetBool(int theBool, bool state);
 };

@@ -34,3 +34,8 @@ void AReparable::Destroy(int n)
 {
 	life = FMath::Clamp(life - n, 0, maxLife);
 }
+
+int AReparable::GetLife()
+{
+	return life;
+}

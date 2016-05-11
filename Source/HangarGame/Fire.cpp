@@ -10,6 +10,16 @@ AFire::AFire()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	nbSpawn = 4;
+
+	maxNbSpawn = nbSpawn;
+
+	maxLife = 100;
+	life = maxLife;
+
+	timeToCreate = 2.0f;
+
+	damage = 10;
 }
 
 // Called when the game starts or when spawned
@@ -17,13 +27,7 @@ void AFire::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle_SpawnFire, this, &AFire::SpawnFire, 2);
-
-	nbSpawn = 4;
-
-	maxNbSpawn = nbSpawn;
-
-	life = 100;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_SpawnFire, this, &AFire::SpawnFire, timeToCreate);
 }
 
 // Called every frame
@@ -94,5 +98,5 @@ void AFire::CreateFire(int x, int y, int z)
 
 void AFire::Damage(int n) {
 
-	life = FMath::Clamp(life - n, 0, 100);
+	life = FMath::Clamp(life - n, 0, maxLife);
 }
