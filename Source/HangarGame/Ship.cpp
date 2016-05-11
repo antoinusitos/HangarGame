@@ -20,9 +20,13 @@ void AShip::BeginPlay()
 
 	for (TActorIterator<AReparable> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
-		reparables[nbReparable] = *ActorItr;
+		AReparable* aR = *ActorItr;
+
+		reparables.Add(aR);
+
 		nbReparable++;
 	}
+
 
 }
 
@@ -30,6 +34,7 @@ void AShip::BeginPlay()
 void AShip::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+
 }
 
 int AShip::GetLife()
@@ -55,4 +60,5 @@ int AShip::GetLifeMax()
 
 	return life;
 }
+
 

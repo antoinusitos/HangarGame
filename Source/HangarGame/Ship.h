@@ -25,9 +25,14 @@ public:
 
 	int GetLifeMax();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "CameraShake")
+		void StartScreenShake();
+
 private:
 
-	AReparable** reparables;
+	TArray<AReparable*> reparables;
+
+	//AReparable** reparables;
 
 	int nbReparable;
 	
