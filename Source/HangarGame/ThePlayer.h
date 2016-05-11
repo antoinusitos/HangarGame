@@ -75,10 +75,13 @@ public:
 
 	/** FIN ANIMATION */
 
+	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
+	int maxLife;
+
 private:
 	/** Handle the life of the player */
 	int currentLife;
-	int maxLife;
+	
 
 	ETypeEnum currentWeaponType;
 	
