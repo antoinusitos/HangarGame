@@ -20,6 +20,7 @@ AThePlayer::AThePlayer()
 	// Movement
 	MoveSpeed = 500.0f;
 	bouclierEquipe = false;
+	angleBouclier = 10.0f;
 
 	maxLife = 100.0f;
 	currentLife = maxLife;
@@ -32,6 +33,12 @@ AThePlayer::AThePlayer()
 	changeGun = false;
 	attack = false;
 	theSpeed = 0.0f;
+
+	healTime = 1.0f;
+	currentHealTime = 0.0f;
+	isHealing = false;
+	canHeal = true;
+	healAmount = 5;
 
 	currentWeaponType = ETypeEnum::Cle;
 }
@@ -84,6 +91,20 @@ void AThePlayer::Tick( float DeltaTime )
 
 	// Try and fire a shot
 	FireShot(FireDirection);
+
+	if (isHealing)
+	{
+		currentHealTime += DeltaTime;
+		if (FMath::Fmod(currentHealTime, 0.1f) <= 0.01f)
+		{
+			AddLife(healAmount);
+		}
+		if (currentHealTime >= healTime)
+		{
+			canHeal = true;
+			isHealing = false;
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -284,4 +305,26 @@ void AThePlayer::StopAnimation(int id)
 {
 	TimerDel = FTimerDelegate::CreateUObject(this, &AThePlayer::SetBool, id, false);
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Animation, TimerDel, .2f, false);
+}
+
+void AThePlayer::Heal()
+{
+	if (canHeal)
+	{
+		canHeal = false;
+		isHealing = true;
+		currentHealTime = 0.0f;
+	}
+}
+
+bool AThePlayer::checkAngle(AActor * origin)
+{
+	bool retour = false;
+	FVector AB = GetActorLocation() - origin->GetActorLocation();
+	FVector AC = GetActorForwardVector();
+	float angle = FMath::Acos((AB.X*AC.X + AB.Y*AC.Y + AB.Z*AC.Z) / (sqrt((AB.X * AB.X) + (AB.Y * AB.Y) + (AB.Z * AB.Z))*sqrt((AC.X * AC.X) + (AC.Y * AC.Y) + (AC.Z * AC.Z))));
+	float degAngle = FMath::RadiansToDegrees(angle);
+	if (degAngle <= angleBouclier)
+		retour = true;
+	return retour;
 }

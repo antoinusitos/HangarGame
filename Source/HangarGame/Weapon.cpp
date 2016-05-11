@@ -121,7 +121,7 @@ void UWeapon::ApplyDamage(AActor* receiver)
 		if (theCharacter)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("touche ! : %s"), *theCharacter->GetName());
-			theCharacter->AddLife(damage);
+			theCharacter->Heal();
 		}
 	}
 }
