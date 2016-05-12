@@ -19,6 +19,8 @@ ASteam::ASteam()
 
 	theArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("FireStart"));
 	theArrowComponent->AttachTo(RootComponent);
+
+	parable = true;
 }
 
 // Called when the game starts or when spawned
@@ -52,8 +54,6 @@ void ASteam::Tick( float DeltaTime )
 
 void ASteam::LaunchSteam() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("steam : %d"),active);
-
 	active = !active;
 
 	steamParticles->SetActive(active);
@@ -78,7 +78,7 @@ void ASteam::SteamDetect()
 			auto player = Cast<AThePlayer>(HitInfo.GetActor());
 			if (player) 
 			{
-				if(player->checkAngle(this) == false)
+				if(!parable || (parable && player->checkAngle(this) == false))
 					player->PlayerTakeDamage(damage);
 
 				UE_LOG(LogTemp, Warning, TEXT("player touched"));

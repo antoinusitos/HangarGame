@@ -33,6 +33,9 @@ public:
 	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
 	class UArrowComponent* theArrowComponent;
 
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
+	bool parable;
+
 private:
 
 	bool active;

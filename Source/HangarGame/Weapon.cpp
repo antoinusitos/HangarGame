@@ -128,6 +128,6 @@ void UWeapon::ApplyDamage(AActor* receiver)
 		{
 			theCharacter->Heal();
 		}
-	}
+	}	
 }
 

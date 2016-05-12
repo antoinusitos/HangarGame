@@ -93,12 +93,18 @@ public:
 
 	bool checkAngle(AActor* origin);
 
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	float GetMaxCoolDown();
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	float GetCoolDown();
+
+	UPROPERTY(Category = Heal, EditAnywhere, BlueprintReadWrite)
+	ETypeEnum currentWeaponType;
+
 private:
 	/** Handle the life of the player */
 	int currentLife;
 	
-
-	ETypeEnum currentWeaponType;
 	
 	static const FName MoveForwardBinding;
 	static const FName MoveRightBinding;
