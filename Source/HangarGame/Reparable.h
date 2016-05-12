@@ -34,6 +34,9 @@ public:
 
 	AShip* ship;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Gameplay")
+	void Execute();
+
 private:
 
 	int life;
