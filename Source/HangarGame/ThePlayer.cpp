@@ -48,6 +48,9 @@ void AThePlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	ChangeWeapon();
+	HideParticle();
+
 }
 
 // Called every frame
@@ -173,6 +176,7 @@ void AThePlayer::SwitchToExtincteur()
 		{
 			if (weapon->weaponType == ETypeEnum::Extincteur)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -199,6 +203,7 @@ void AThePlayer::SwitchToBouclier()
 		{
 			if (weapon->weaponType == ETypeEnum::Bouclier)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -225,6 +230,7 @@ void AThePlayer::SwitchToCle()
 		{
 			if (weapon->weaponType == ETypeEnum::Cle)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -251,6 +257,7 @@ void AThePlayer::SwitchToHealGun()
 		{
 			if (weapon->weaponType == ETypeEnum::Healgun)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -276,6 +283,7 @@ void AThePlayer::FireShot(FVector FireDirection)
 
 		TArray<UWeapon*> comps;
 		GetComponents(comps);
+		ShowParticle();
 		//UE_LOG(LogTemp, Warning, TEXT("tir !"));
 		for (auto weapon : comps)
 		{
@@ -284,6 +292,7 @@ void AThePlayer::FireShot(FVector FireDirection)
 	}
 	else
 	{
+		HideParticle();
 		bouclierEquipe = false;
 		SetBool(0, false);
 		SetBool(1, false);

@@ -36,6 +36,12 @@ public:
 	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
 	bool parable;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
+	void ShowParticle();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
+	void HideParticle();
+
 private:
 
 	bool active;

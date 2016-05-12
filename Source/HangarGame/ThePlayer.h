@@ -101,6 +101,15 @@ public:
 	UPROPERTY(Category = Heal, EditAnywhere, BlueprintReadWrite)
 	ETypeEnum currentWeaponType;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
+	void ChangeWeapon();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
+	void ShowParticle();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
+	void HideParticle();
+
 private:
 	/** Handle the life of the player */
 	int currentLife;
