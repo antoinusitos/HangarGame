@@ -40,7 +40,12 @@ void AFire::Tick( float DeltaTime )
 
 	float ratio = life / maxLife;
 
-	SetActorScale3D(FVector(basesize.X * ratio, basesize.Y * ratio, basesize.Z * ratio));
+	TArray<UParticleSystemComponent*> comps;
+	GetComponents(comps);
+	for (auto fire : comps)
+	{
+		fire->SetWorldScale3D(FVector(basesize.X * ratio, basesize.Y * ratio, basesize.Z * ratio));
+	}
 
 }
 
