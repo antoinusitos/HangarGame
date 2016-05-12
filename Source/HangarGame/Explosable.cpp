@@ -23,14 +23,27 @@ void AExplosable::BeginPlay()
 
 	for (int i = 0; i < comps.Num(); ++i) //Because there may be more components
 	{
-		UDecalComponent* thisComp = Cast<UDecalComponent>(comps[i]);
+		/*UDecalComponent* thisComp = Cast<UDecalComponent>(comps[i]);
 		if (thisComp)
 		{
 			myDecal = thisComp;
+		}*/
+		UParticleSystemComponent* thisComp2 = Cast<UParticleSystemComponent>(comps[i]);
+		if (thisComp2 && thisComp2->GetName().Contains("Warning"))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("explosion warning"));
+			warning = thisComp2;
+		}
+		else if (thisComp2 && thisComp2->GetName().Contains("Trigger"))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("explosion trigger"));
+			trigger = thisComp2;
 		}
 	}
 	
-	myDecal->SetVisibility(false);
+	//myDecal->SetVisibility(false);
+	warning->SetVisibility(false);
+	trigger->SetVisibility(false);
 
 	Explose(3);
 }
@@ -44,14 +57,19 @@ void AExplosable::Tick( float DeltaTime )
 
 void AExplosable::Explose(float timer)
 {
-	myDecal->SetVisibility(true);
+	//myDecal->SetVisibility(true);
+	warning->SetVisibility(true);
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_DoExplosion, this, &AExplosable::DoExplosion, timer);
 }
 
 void AExplosable::DoExplosion()
 {
-	myDecal->SetVisibility(false);
+	//myDecal->SetVisibility(false);
+
+	warning->SetVisibility(false);
+	trigger->SetVisibility(true);
+	trigger->ActivateSystem(true);
 
 	//explosion fx
 
