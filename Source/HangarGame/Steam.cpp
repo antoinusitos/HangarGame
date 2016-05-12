@@ -52,8 +52,6 @@ void ASteam::Tick( float DeltaTime )
 
 void ASteam::LaunchSteam() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("steam : %d"),active);
-
 	active = !active;
 
 	steamParticles->SetActive(active);

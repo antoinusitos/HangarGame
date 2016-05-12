@@ -130,8 +130,11 @@ void AThePlayer::SetupPlayerInputComponent(class UInputComponent* InputComponent
 void AThePlayer::PlayerTakeDamage(int amount)
 {
 	currentLife = FMath::Max(0, currentLife - amount);
+	UE_LOG(LogTemp, Warning, TEXT("current Life : %d"), currentLife);
+	UE_LOG(LogTemp, Warning, TEXT("lol"));
 	if (currentLife == 0)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("DEAD"));
 		dead = true;
 	}
 }
@@ -332,4 +335,36 @@ bool AThePlayer::checkAngle(AActor * origin)
 	if (degAngle <= 170 && degAngle >= 140 && bouclierEquipe)
 		retour = true;
 	return retour;
+}
+
+float AThePlayer::GetMaxCoolDown()
+{
+	TArray<UWeapon*> comps;
+	GetComponents(comps);
+
+	for (auto weapon : comps)
+	{
+		if (weapon->active)
+		{
+			return weapon->fireRate;
+		}
+	}
+
+	return 0.0f;
+}
+
+float AThePlayer::GetCoolDown()
+{
+	TArray<UWeapon*> comps;
+	GetComponents(comps);
+
+	for (auto weapon : comps)
+	{
+		if (weapon->active)
+		{
+			return weapon->lastShoot;
+		}
+	}
+
+	return 0.0f;
 }
