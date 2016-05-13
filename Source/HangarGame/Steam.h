@@ -42,6 +42,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
 	void HideParticle();
 
+	UPROPERTY(Category = Camera, EditAnywhere, BlueprintReadWrite)
+	UAudioComponent* AudioComp;
+
 private:
 
 	bool active;

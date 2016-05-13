@@ -20,6 +20,9 @@ ASteam::ASteam()
 	theArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("FireStart"));
 	theArrowComponent->AttachTo(RootComponent);
 
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("audio"));
+	AudioComp->AttachTo(RootComponent);
+
 	parable = true;
 }
 
@@ -59,6 +62,9 @@ void ASteam::LaunchSteam()
 	steamParticles->SetVisibility(active);
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_LaunchSteam, this, &ASteam::LaunchSteam, launchRate);
+
+	if(active)
+		AudioComp->Play();
 }
 
 void ASteam::SteamDetect()
@@ -72,7 +78,7 @@ void ASteam::SteamDetect()
 		FCollisionQueryParams QParams;
 		ECollisionChannel Channel = ECollisionChannel::ECC_Visibility;
 		FCollisionQueryParams OParams = FCollisionQueryParams::DefaultQueryParam;
-
+		
 		if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_Visibility))
 		{
 			auto player = Cast<AThePlayer>(HitInfo.GetActor());
