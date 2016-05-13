@@ -11,6 +11,7 @@ AExplosable::AExplosable()
 	PrimaryActorTick.bCanEverTick = true;
 
 	damage = 20;
+	forceExplosion = 100.0f;
 }
 
 // Called when the game starts or when spawned
@@ -31,12 +32,12 @@ void AExplosable::BeginPlay()
 		UParticleSystemComponent* thisComp2 = Cast<UParticleSystemComponent>(comps[i]);
 		if (thisComp2 && thisComp2->GetName().Contains("Warning"))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("explosion warning"));
+			//UE_LOG(LogTemp, Warning, TEXT("explosion warning"));
 			warning = thisComp2;
 		}
 		else if (thisComp2 && thisComp2->GetName().Contains("Trigger"))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("explosion trigger"));
+			//UE_LOG(LogTemp, Warning, TEXT("explosion trigger"));
 			trigger = thisComp2;
 		}
 	}
@@ -71,6 +72,11 @@ void AExplosable::DoExplosion()
 	trigger->SetVisibility(true);
 	trigger->ActivateSystem(true);
 
+	for (TActorIterator<AShip> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		ActorItr->StartScreenShake(forceExplosion);
+	}
+
 	//explosion fx
 
 	TArray<AActor*> actors;
@@ -80,10 +86,18 @@ void AExplosable::DoExplosion()
 	for (auto It = actors.CreateConstIterator(); It; ++It)
 	{
 		auto player = Cast<AThePlayer>(*It);
-		if (player) {
-			player->PlayerTakeDamage(damage);
+		if (player)
+		{
+			if (player->checkAngle(this) == false)
+			{
+				player->PlayerTakeDamage(damage);
 
-			UE_LOG(LogTemp, Warning, TEXT("Player detected"));
+				UE_LOG(LogTemp, Warning, TEXT("Player detected ici"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Player ici"));
+			}
 		}
 	}
 	

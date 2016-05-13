@@ -27,6 +27,9 @@ public:
 
 	int damage;
 
+	UPROPERTY(Category = active, EditAnywhere, BlueprintReadWrite)
+	float forceExplosion;
+
 private:
 
 	void DoExplosion();

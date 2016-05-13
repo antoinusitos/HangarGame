@@ -48,6 +48,9 @@ void AThePlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	ChangeWeapon();
+	HideParticle();
+
 }
 
 // Called every frame
@@ -130,11 +133,8 @@ void AThePlayer::SetupPlayerInputComponent(class UInputComponent* InputComponent
 void AThePlayer::PlayerTakeDamage(int amount)
 {
 	currentLife = FMath::Max(0, currentLife - amount);
-	UE_LOG(LogTemp, Warning, TEXT("current Life : %d"), currentLife);
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
 	if (currentLife == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("DEAD"));
 		dead = true;
 	}
 }
@@ -173,6 +173,7 @@ void AThePlayer::SwitchToExtincteur()
 		{
 			if (weapon->weaponType == ETypeEnum::Extincteur)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -199,6 +200,7 @@ void AThePlayer::SwitchToBouclier()
 		{
 			if (weapon->weaponType == ETypeEnum::Bouclier)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -225,6 +227,7 @@ void AThePlayer::SwitchToCle()
 		{
 			if (weapon->weaponType == ETypeEnum::Cle)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -251,6 +254,7 @@ void AThePlayer::SwitchToHealGun()
 		{
 			if (weapon->weaponType == ETypeEnum::Healgun)
 			{
+				ChangeWeapon();
 				changeGun = true;
 				StopAnimation(0);
 				weapon->active = true;
@@ -276,6 +280,7 @@ void AThePlayer::FireShot(FVector FireDirection)
 
 		TArray<UWeapon*> comps;
 		GetComponents(comps);
+		ShowParticle();
 		//UE_LOG(LogTemp, Warning, TEXT("tir !"));
 		for (auto weapon : comps)
 		{
@@ -284,6 +289,7 @@ void AThePlayer::FireShot(FVector FireDirection)
 	}
 	else
 	{
+		HideParticle();
 		bouclierEquipe = false;
 		SetBool(0, false);
 		SetBool(1, false);
@@ -337,14 +343,14 @@ bool AThePlayer::checkAngle(AActor * origin)
 	return retour;
 }
 
-float AThePlayer::GetMaxCoolDown()
+float AThePlayer::GetMaxCoolDown(ETypeEnum type)
 {
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
 	for (auto weapon : comps)
 	{
-		if (weapon->active)
+		if (weapon->weaponType == type)
 		{
 			return weapon->fireRate;
 		}
@@ -353,18 +359,29 @@ float AThePlayer::GetMaxCoolDown()
 	return 0.0f;
 }
 
-float AThePlayer::GetCoolDown()
+float AThePlayer::GetCoolDown(ETypeEnum type)
 {
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
 	for (auto weapon : comps)
 	{
-		if (weapon->active)
+		if (weapon->weaponType == type)
 		{
 			return weapon->lastShoot;
 		}
 	}
 
 	return 0.0f;
+}
+
+void AThePlayer::ReloadAll()
+{
+	TArray<UWeapon*> comps;
+	GetComponents(comps);
+
+	for (auto weapon : comps)
+	{
+		weapon->canShoot = true;
+	}
 }

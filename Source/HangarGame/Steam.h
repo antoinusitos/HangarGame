@@ -33,8 +33,14 @@ public:
 	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
 	class UArrowComponent* theArrowComponent;
 
-	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = Camera, EditAnywhere, BlueprintReadWrite)
 	bool parable;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
+	void ShowParticle();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
+	void HideParticle();
 
 private:
 
