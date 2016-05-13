@@ -94,9 +94,9 @@ public:
 	bool checkAngle(AActor* origin);
 
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-	float GetMaxCoolDown();
+	float GetMaxCoolDown(ETypeEnum type);
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-	float GetCoolDown();
+	float GetCoolDown(ETypeEnum type);
 
 	UPROPERTY(Category = Heal, EditAnywhere, BlueprintReadWrite)
 	ETypeEnum currentWeaponType;
