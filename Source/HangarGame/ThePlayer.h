@@ -110,6 +110,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon")
 	void HideParticle();
 
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	void ReloadAll();
+
 private:
 	/** Handle the life of the player */
 	int currentLife;

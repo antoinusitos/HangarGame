@@ -133,11 +133,8 @@ void AThePlayer::SetupPlayerInputComponent(class UInputComponent* InputComponent
 void AThePlayer::PlayerTakeDamage(int amount)
 {
 	currentLife = FMath::Max(0, currentLife - amount);
-	UE_LOG(LogTemp, Warning, TEXT("current Life : %d"), currentLife);
-	UE_LOG(LogTemp, Warning, TEXT("lol"));
 	if (currentLife == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("DEAD"));
 		dead = true;
 	}
 }
@@ -376,4 +373,15 @@ float AThePlayer::GetCoolDown()
 	}
 
 	return 0.0f;
+}
+
+void AThePlayer::ReloadAll()
+{
+	TArray<UWeapon*> comps;
+	GetComponents(comps);
+
+	for (auto weapon : comps)
+	{
+		weapon->canShoot = true;
+	}
 }

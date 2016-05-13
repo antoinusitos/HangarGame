@@ -30,7 +30,7 @@ public:
 	int GetLifeMax();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "CameraShake")
-	void StartScreenShake();
+	void StartScreenShake(float strengh);
 
 	void changeReparable(AReparable* reparated);
 
