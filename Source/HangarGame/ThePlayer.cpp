@@ -343,14 +343,14 @@ bool AThePlayer::checkAngle(AActor * origin)
 	return retour;
 }
 
-float AThePlayer::GetMaxCoolDown()
+float AThePlayer::GetMaxCoolDown(ETypeEnum type)
 {
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
 	for (auto weapon : comps)
 	{
-		if (weapon->active)
+		if (weapon->weaponType == type)
 		{
 			return weapon->fireRate;
 		}
@@ -359,14 +359,14 @@ float AThePlayer::GetMaxCoolDown()
 	return 0.0f;
 }
 
-float AThePlayer::GetCoolDown()
+float AThePlayer::GetCoolDown(ETypeEnum type)
 {
 	TArray<UWeapon*> comps;
 	GetComponents(comps);
 
 	for (auto weapon : comps)
 	{
-		if (weapon->active)
+		if (weapon->weaponType == type)
 		{
 			return weapon->lastShoot;
 		}
