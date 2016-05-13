@@ -28,6 +28,12 @@ void AReparable::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	if (life >= maxLife)
+	{
+		active = false;
+		Execute();
+	}
+
 }
 
 void AReparable::Repare(int n) 
@@ -52,4 +58,9 @@ void AReparable::Destroy(int n)
 int AReparable::GetLife()
 {
 	return life;
+}
+
+void AReparable::ExecuteFonction()
+{
+	Execute();
 }
