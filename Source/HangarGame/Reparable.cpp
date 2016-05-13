@@ -17,6 +17,8 @@ AReparable::AReparable()
 // Called when the game starts or when spawned
 void AReparable::BeginPlay()
 {
+
+	isBeingRepaired = false;
 	Super::BeginPlay();
 	
 }
@@ -32,6 +34,8 @@ void AReparable::Repare(int n)
 {
 	if (active)
 	{
+		isBeingRepaired = true;
+
 		life = FMath::Clamp(life + n, 0, maxLife);
 
 		if (life >= maxLife) {

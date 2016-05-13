@@ -21,6 +21,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	void Repare(int n);
 
 	void Destroy(int n);
@@ -36,6 +37,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Gameplay")
 	void Execute();
+
+	UPROPERTY(Category = Gameplay,VisibleAnywhere,BlueprintReadWrite)
+	bool isBeingRepaired;
 
 private:
 
