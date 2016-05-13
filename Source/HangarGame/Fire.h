@@ -38,11 +38,22 @@ public:
 	UPROPERTY(Category = Gameplay, VisibleAnywhere, BlueprintReadWrite)
 	int damage;
 
+	void SetBaseSize(FVector size);
+
+	UPROPERTY(Category = Gameplay, EditAnywhere, BlueprintReadWrite)
+	UClass* ExplosionBP;
+
+	void DestroyObject(AActor* obj);
+
 private:
+
+	FVector basesize;
 
 	void SpawnFire();
 
 	void CreateFire(int x, int y, int z);
 
 	FTimerHandle TimerHandle_SpawnFire;
+	FTimerHandle TimerHandle_Animation;
+	FTimerDelegate TimerDel;
 };

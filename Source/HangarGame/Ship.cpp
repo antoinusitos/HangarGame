@@ -32,9 +32,9 @@ void AShip::BeginPlay()
 		aR->ship = this;
 	}
 
-	int index = FMath::RandRange(0, reparables.Num()-1);
+	/*int index = FMath::RandRange(0, reparables.Num()-1);
 	reparables[index]->active = true;
-	reparables[index]->Execute();
+	reparables[index]->Execute();*/
 }
 
 // Called every frame
@@ -70,7 +70,7 @@ int AShip::GetLifeMax()
 
 void AShip::changeReparable(AReparable* reparated)
 {
-	reparated->active = false;
+	/*reparated->active = false;
 	reparated->Execute();
 	canBeRepared.Remove(reparated);
 
@@ -78,5 +78,5 @@ void AShip::changeReparable(AReparable* reparated)
 		int index = FMath::RandRange(0, canBeRepared.Num() - 1);
 		canBeRepared[index]->active = true;
 		canBeRepared[index]->Execute();
-	}
+	}*/
 }

@@ -2,6 +2,7 @@
 
 #include "HangarGame.h"
 #include "Fire.h"
+#include "ExplosableComponent.h"
 
 
 // Sets default values
@@ -20,6 +21,8 @@ AFire::AFire()
 	timeToCreate = 5.0f;
 
 	damage = 10;
+
+	basesize = GetActorScale3D();
 }
 
 // Called when the game starts or when spawned
@@ -35,9 +38,28 @@ void AFire::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	float ratio = life / maxLife;
+
+	TArray<UParticleSystemComponent*> comps;
+	GetComponents(comps);
+	for (auto fire : comps)
+	{
+		fire->SetWorldScale3D(FVector(basesize.X * ratio, basesize.Y * ratio, basesize.Z * ratio));
+	}
+
 }
 
-void AFire::SpawnFire() 
+void AFire::SetBaseSize(FVector size)
+{
+	basesize = size;
+}
+
+void AFire::DestroyObject(AActor* obj)
+{
+	obj->Destroy();
+}
+
+void AFire::SpawnFire()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Fire Spawn"));
 
@@ -73,23 +95,36 @@ void AFire::CreateFire(int x, int y, int z)
 	if (GetWorld()->LineTraceSingleByChannel(HitInfo, Start, End, ECollisionChannel::ECC_Visibility))
 	{
 		auto ob = Cast<AFire>(HitInfo.GetActor());
-		if (ob) {
+		if (ob) 
+		{
 
 			canSpawn = false;
 
 			//UE_LOG(LogTemp, Warning, TEXT("%s"), *ob->GetName());
 		}
-		else {
+		else 
+		{
 			canSpawn = false;
 		}
+		TArray<UExplosableComponent*> comps;
+		HitInfo.GetActor()->GetComponents(comps);
+		if (comps.Num() > 0)
+		{
+			(AActor*)GetWorld()->SpawnActor(ExplosionBP, &firePos);
+			TimerDel = FTimerDelegate::CreateUObject(this, &AFire::DestroyObject, HitInfo.GetActor());
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle_Animation, TimerDel, 3.0f, false);
+		}
+		
 	}
 	float randomF = nbSpawn == maxNbSpawn ? 1 : FMath::FRandRange(0, 1) ;
 
 	if (canSpawn && randomF > 0.45f) {
 		AActor* SpawnedActor1 = (AActor*)GetWorld()->SpawnActor(GetClass(), &firePos);
-
+		float random = FMath::RandRange(1.0f, 3.0f);
+		SpawnedActor1->SetActorScale3D(FVector(random, random, random));
+		
 		auto fire = Cast<AFire>(SpawnedActor1);
-
+		fire->SetBaseSize(FVector(random, random, random));
 		if (fire) {
 			fire->nbSpawn = nbSpawn - 1;
 		}
@@ -104,3 +139,4 @@ void AFire::Damage(int n) {
 		Destroy();
 	}
 }
+

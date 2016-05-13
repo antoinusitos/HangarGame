@@ -56,7 +56,7 @@ void ASteam::LaunchSteam()
 {
 	active = !active;
 
-	steamParticles->SetActive(active);
+	steamParticles->SetVisibility(active);
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_LaunchSteam, this, &ASteam::LaunchSteam, launchRate);
 }
