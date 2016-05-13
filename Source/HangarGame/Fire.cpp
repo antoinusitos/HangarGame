@@ -97,7 +97,6 @@ void AFire::CreateFire(int x, int y, int z)
 		auto ob = Cast<AFire>(HitInfo.GetActor());
 		if (ob) 
 		{
-
 			canSpawn = false;
 
 			//UE_LOG(LogTemp, Warning, TEXT("%s"), *ob->GetName());
