@@ -41,6 +41,9 @@ public:
 	UPROPERTY(Category = Gameplay,VisibleAnywhere,BlueprintReadWrite)
 	bool isBeingRepaired;
 
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	void ExecuteFonction();
+
 private:
 
 	int life;
